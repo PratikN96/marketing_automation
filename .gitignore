@@ -1,0 +1,25 @@
+# Videos (large files - use GitHub Releases instead)
+hooks/
+final/
+cta.mp4
+
+# Credentials (never commit these)
+credentials.json
+token.json
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# Logs
+*.log
+failed_downloads.txt
+downloaded_urls.txt
+
+# OS
+.DS_Store
