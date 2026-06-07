@@ -32,6 +32,10 @@ def append_line(filepath, line):
 
 
 def fetch_video_urls(channel_url, count):
+    # Ensure we hit the /shorts tab
+    if "/shorts" not in channel_url:
+        channel_url = channel_url.rstrip("/") + "/shorts"
+
     print(f"Fetching last {count} video URLs from {channel_url} ...")
     ydl_opts = {
         "quiet": True,
@@ -43,10 +47,12 @@ def fetch_video_urls(channel_url, count):
         entries = info.get("entries", [])
         urls = []
         for entry in entries:
-            if entry and entry.get("url"):
-                urls.append("https://www.youtube.com/watch?v=" + entry["url"])
-            elif entry and entry.get("id"):
-                urls.append("https://www.youtube.com/watch?v=" + entry["id"])
+            if not entry:
+                continue
+            # Video IDs are exactly 11 characters
+            vid_id = entry.get("id", "")
+            if vid_id and len(vid_id) == 11:
+                urls.append("https://www.youtube.com/watch?v=" + vid_id)
         return urls
 
 
@@ -59,6 +65,7 @@ def download_3s_clip(url, output_path):
         "outtmpl": tmp_path,
         "format": "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
         "merge_output_format": "mp4",
+        "extractor_args": {"youtube": {"player_client": ["android"]}},
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:

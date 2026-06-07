@@ -25,8 +25,11 @@ YOUTUBE_REFRESH_TOKEN = os.environ.get("YOUTUBE_REFRESH_TOKEN", "")
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
 GITHUB_REPO  = os.environ.get("GITHUB_REPO", "")  # e.g. "youruser/marketing_automation"
 
+# ── YouTube channel ───────────────────────────────────────────────────────────
+YOUTUBE_CHANNEL_HANDLE = "@JesusIsKing-thelord"
+
 # ── Video metadata ────────────────────────────────────────────────────────────
-VIDEO_TITLE_PREFIX  = "🔥"   # prefix for all YouTube titles
-VIDEO_DESCRIPTION   = ""     # default description for all videos
-VIDEO_TAGS          = []     # e.g. ["shorts", "viral", "funny"]
-VIDEO_CATEGORY_ID   = "22"   # 22 = People & Blogs, 24 = Entertainment
+VIDEO_TITLE_PREFIX  = ""
+VIDEO_DESCRIPTION   = ""
+VIDEO_TAGS          = ["jesus", "christian", "faith", "shorts", "viral"]
+VIDEO_CATEGORY_ID   = "29"   # 29 = Nonprofits & Activism

@@ -73,6 +73,7 @@ def main():
     parser.add_argument("--cta", required=True, help="Path to CTA video")
     parser.add_argument("--output", required=True, help="Output folder for final videos")
     parser.add_argument("--overwrite", action="store_true", help="Overwrite existing final videos")
+    parser.add_argument("--limit", type=int, default=None, help="Max number of videos to stitch")
     args = parser.parse_args()
 
     if not os.path.exists(args.hooks):
@@ -93,6 +94,9 @@ def main():
     if not hooks:
         print(f"❌ No .mp4 files found in {args.hooks}")
         sys.exit(1)
+
+    if args.limit:
+        hooks = hooks[:args.limit]
 
     print(f"Found {len(hooks)} hooks. Normalizing CTA clip once...")
 

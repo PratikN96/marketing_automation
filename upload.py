@@ -16,6 +16,8 @@ import google.oauth2.credentials
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
+import config
+
 
 QUEUE_FILE = "queue.json"
 VIDEOS_PER_DAY = 3
@@ -80,10 +82,10 @@ def upload_video(youtube, video_path, publish_at, index, total):
 
     body = {
         "snippet": {
-            "title": title,
-            "description": "",
-            "tags": [],
-            "categoryId": "22",
+            "title": f"{config.VIDEO_TITLE_PREFIX}{title}".strip(),
+            "description": config.VIDEO_DESCRIPTION,
+            "tags": config.VIDEO_TAGS,
+            "categoryId": config.VIDEO_CATEGORY_ID,
         },
         "status": {
             "privacyStatus": "private",
@@ -117,6 +119,7 @@ def main():
     parser = argparse.ArgumentParser(description="Upload final videos to YouTube")
     parser.add_argument("--folder", required=True, help="Folder containing final videos")
     parser.add_argument("--start-date", required=True, help="First publish date (YYYY-MM-DD)")
+    parser.add_argument("--skip", type=int, default=0, help="Skip first N videos (e.g. 10 if posted manually)")
     args = parser.parse_args()
 
     if not os.path.exists(args.folder):
@@ -143,6 +146,10 @@ def main():
     ])
 
     pending = [v for v in videos if v not in already_uploaded]
+
+    if args.skip:
+        pending = pending[args.skip:]
+        print(f"Skipping first {args.skip} videos (posted manually).")
 
     if not pending:
         print("✅ All videos already uploaded. Nothing to do.")
